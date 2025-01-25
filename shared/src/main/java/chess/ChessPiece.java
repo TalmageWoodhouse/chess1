@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static chess.ChessGame.TeamColor.BLACK;
+import static chess.ChessGame.TeamColor.WHITE;
+
 /**
  * Represents a single chess piece
  * <p>
@@ -12,7 +15,7 @@ import java.util.List;
  */
 public class ChessPiece {
 
-    private final ChessGame.TeamColor pieceColor;
+    private static final ChessGame.TeamColor pieceColor;
     private final PieceType type;
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
@@ -227,46 +230,33 @@ public class ChessPiece {
         @Override
         public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
             Collection<ChessMove> moves = new ArrayList<>();
-            int[][] pawnMoves = {
-                    {1, 0},
-                    {-1, 0}
+            int[][] whitePawnMoves ={
+                    {1, 0}, {1, 1}, {1, -1}
             };
             int row = myPosition.getRow();
             int col = myPosition.getColumn();
-            for (int[] direction : pawnMoves) {
-                row += direction[0];
-                col += direction[1];
-                ChessPosition newPosition = new ChessPosition(row, col);
-                // if (pieceColor == WHITE) {
-                //        if front blocked cant move
-                //        if
-                //
-                //
-                //
+            if (pieceColor == WHITE) {
 
-                //k
-                    // if (board.isPositionOccupiedByEnemyPiece) {
-
-                //          new chesposition row, col+1
-                //          new chessposition row, col -1
-                //          moves.add( direction[0][1]+1 or direction[0][1]-1)
-                //     }
-                // }
-                // if (pieceColor == black) then direction[1][2]
-                //      if (board.isPositionOccupiedByEnemyPiece) {
-                //          moves.add( direction[1][2]+1 or direction[1][2]-1 )
-                //      }
-                // }
-                if (board.isPositionValid(newPosition) && !board.isPositionOccupiedByFriendly(newPosition, myPosition)) {
-                    if (board.isPositionOccupiedByEnemy(newPosition, myPosition)) {
-
-                        moves.add(new ChessMove(myPosition, newPosition, null));
-
-
+                ChessPosition frontPosition = new ChessPosition(row+1, col);
+                ChessPosition rightPosition = new ChessPosition(row+1, col+1);
+                ChessPosition leftPosition = new ChessPosition(row+1, col-1);
+                if (board.isPositionValid(frontPosition) && !board.isPositionOccupiedByFriendly(frontPosition, myPosition) && !board.isPositionOccupiedByEnemy(frontPosition, myPosition)) {
+                        moves.add(new ChessMove(myPosition, frontPosition, null));
                     }
-                    moves.add(new ChessMove(myPosition, newPosition, null));
                 }
-                /// elif (board.isPositionValid(newPosition) && !board.isPositionOccupiedByFriendly(newPosition, myPosition))
+                if (board.isPositionValid(rightPosition) && board.isPositionOccupiedByEnemy(rightPosition, myPosition)) {
+                    moves.add(new ChessMove(myPosition, rightPosition, null));
+                }
+                if (board.isPositionValid(leftPosition) && board.isPositionOccupiedByEnemy(leftPosition, myPosition)) {
+                    moves.add(new ChessMove(myPosition, leftPosition, null));
+                }
+
+            }
+            int[][] blackPawnMoves = {
+                    {-1, 0}, {-1, 1}, {-1, -1}
+            };
+            if (pieceColor == BLACK) {
+
             }
             return moves;
         }
