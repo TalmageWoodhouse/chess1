@@ -47,6 +47,9 @@ public class ChessGame {
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         throw new RuntimeException("Not implemented");
+        // ChessPiece piece = getPiece(startPosition)
+        // if (piece == rook) {valid moves}
+        // if (piece == bishop) {valid moves}
     }
 
     /**
