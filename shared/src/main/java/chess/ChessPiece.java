@@ -57,9 +57,9 @@ public class ChessPiece {
         ChessPieceMoveCalculator moves = switch(getPieceType()) {
             case QUEEN -> new QueenMoveCalculator();
             case BISHOP -> new BishopMoveCalculator();
-            //case KING -> new KingMoveCalculator();
+            case KING -> new KingMoveCalculator();
             case ROOK -> new RookMoveCalculator();
-            //case PAWN -> new PawnMoveCalculator();
+            case PAWN -> new PawnMoveCalculator();
             case KNIGHT -> new KnightMoveCalculator();
             default -> throw new RuntimeException("invalid type in pieceMoves");
         };
@@ -93,10 +93,14 @@ public class ChessPiece {
                 col += direction[1];
                 ChessPosition newPosition = new ChessPosition(row,col);
                 while (board.isPositionValid(newPosition) && !board.isPositionOccupiedByFriendly(newPosition, myPosition)) {
+                    if (board.isPositionOccupiedByEnemy(newPosition, myPosition)) {
+                        moves.add(new ChessMove(myPosition, newPosition, null));
+                        break;
+                    }
                     moves.add(new ChessMove(myPosition, newPosition, null));
                     row += direction[0];
                     col += direction[1];
-                    newPosition = new ChessPosition(row,col);
+                    newPosition = new ChessPosition(row, col);
                 }
                 row = myPosition.getRow();
                 col = myPosition.getColumn();
@@ -119,6 +123,10 @@ public class ChessPiece {
                 col += direction[1];
                 ChessPosition newPosition = new ChessPosition(row,col);
                 while (board.isPositionValid(newPosition) && !board.isPositionOccupiedByFriendly(newPosition, myPosition)) {
+                    if (board.isPositionOccupiedByEnemy(newPosition, myPosition)) {
+                        moves.add(new ChessMove(myPosition, newPosition, null));
+                        break;
+                    }
                     moves.add(new ChessMove(myPosition, newPosition, null));
                     row += direction[0];
                     col += direction[1];
@@ -147,6 +155,10 @@ public class ChessPiece {
                 col += direction[1];
                 ChessPosition newPosition = new ChessPosition(row,col);
                 while (board.isPositionValid(newPosition) && !board.isPositionOccupiedByFriendly(newPosition, myPosition)) {
+                    if (board.isPositionOccupiedByEnemy(newPosition, myPosition)) {
+                        moves.add(new ChessMove(myPosition, newPosition, null));
+                        break;
+                    }
                     moves.add(new ChessMove(myPosition, newPosition, null));
                     row += direction[0];
                     col += direction[1];
@@ -176,9 +188,6 @@ public class ChessPiece {
                 ChessPosition newPosition = new ChessPosition(row,col);
                 if (board.isPositionValid(newPosition) && !board.isPositionOccupiedByFriendly(newPosition, myPosition)) {
                     moves.add(new ChessMove(myPosition, newPosition, null));
-                    row += direction[0];
-                    col += direction[1];
-                    newPosition = new ChessPosition(row,col);
                 }
                 row = myPosition.getRow();
                 col = myPosition.getColumn();
@@ -187,20 +196,81 @@ public class ChessPiece {
         }
     }
 
-//    public static class PawnMoveCalculator implements ChessPieceMoveCalculator {
-//        @Override
-//        public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition position) {
-//            Collection<ChessMove> moves = new ArrayList<>();
-//            int[][] pawnMoves = {
-//                    {1, 0}
-//            };
-//            ChessPosition newPosition = new ChessPosition(position.getRow() + 1, position.getColumn());
-//            if (board.isPositionValid(newPosition) && !board.isPositionOccupiedByFriendly(newPosition, position)) {
-//                moves.add(new ChessMove(position, newPosition, null));
-//            }
-//            return moves;
-//        }
-//    }
+
+    public static class KingMoveCalculator implements ChessPieceMoveCalculator {
+        @Override
+        public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
+            Collection<ChessMove> moves = new ArrayList<>();
+            int[][] kingMoveDirections = {
+                    {1, 1}, {1, -1}, {-1, 1}, {-1, -1}, //bishop like moves
+                    {1, 0}, {-1, 0}, {0, 1}, {0, -1}  //rook like moves
+            };
+            int row = myPosition.getRow();
+            int col = myPosition.getColumn();
+            for (int[] direction : kingMoveDirections) {
+                row += direction[0];
+                col += direction[1];
+                ChessPosition newPosition = new ChessPosition(row,col);
+                if (board.isPositionValid(newPosition) && !board.isPositionOccupiedByFriendly(newPosition, myPosition)) {
+                    moves.add(new ChessMove(myPosition, newPosition, null));
+                }
+                row = myPosition.getRow();
+                col = myPosition.getColumn();
+            }
+            return moves;
+        }
+    }
+
+
+
+    public static class PawnMoveCalculator implements ChessPieceMoveCalculator {
+        @Override
+        public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
+            Collection<ChessMove> moves = new ArrayList<>();
+            int[][] pawnMoves = {
+                    {1, 0},
+                    {-1, 0}
+            };
+            int row = myPosition.getRow();
+            int col = myPosition.getColumn();
+            for (int[] direction : pawnMoves) {
+                row += direction[0];
+                col += direction[1];
+                ChessPosition newPosition = new ChessPosition(row, col);
+                // if (pieceColor == WHITE) {
+                //        if front blocked cant move
+                //        if
+                //
+                //
+                //
+
+                //k
+                    // if (board.isPositionOccupiedByEnemyPiece) {
+
+                //          new chesposition row, col+1
+                //          new chessposition row, col -1
+                //          moves.add( direction[0][1]+1 or direction[0][1]-1)
+                //     }
+                // }
+                // if (pieceColor == black) then direction[1][2]
+                //      if (board.isPositionOccupiedByEnemyPiece) {
+                //          moves.add( direction[1][2]+1 or direction[1][2]-1 )
+                //      }
+                // }
+                if (board.isPositionValid(newPosition) && !board.isPositionOccupiedByFriendly(newPosition, myPosition)) {
+                    if (board.isPositionOccupiedByEnemy(newPosition, myPosition)) {
+
+                        moves.add(new ChessMove(myPosition, newPosition, null));
+
+
+                    }
+                    moves.add(new ChessMove(myPosition, newPosition, null));
+                }
+                /// elif (board.isPositionValid(newPosition) && !board.isPositionOccupiedByFriendly(newPosition, myPosition))
+            }
+            return moves;
+        }
+    }
 
 
 //    public static class QueenMoveCalculator implements ChessPieceMoveCalculator {

@@ -89,12 +89,29 @@ public class ChessBoard {
         }
         ChessPiece myPiece = getPiece(myPosition);
         ChessPiece targetPiece = getPiece(position);
-
         // Checks edge case for myPiece and if there is no piece at target position.
         if (myPiece == null || targetPiece == null) {
             return false;
         }
-
         return myPiece.getTeamColor() == targetPiece.getTeamColor();
+    }
+
+    /**
+     * Checks if the given position is occupied by a friendly piece.
+     *
+     * @param position The position to check
+     * @return true if the position is occupied by the friendly piece; else false.
+     */
+    public boolean isPositionOccupiedByEnemy(ChessPosition position, ChessPosition myPosition) {
+        if (position == null || myPosition == null) {
+            return false; //invalid input
+        }
+        ChessPiece myPiece = getPiece(myPosition);
+        ChessPiece targetPiece = getPiece(position);
+        // Checks edge case for myPiece and if there is no piece at target position.
+        if (myPiece == null || targetPiece == null) {
+            return false;
+        }
+        return myPiece.getTeamColor() != targetPiece.getTeamColor();
     }
 }
