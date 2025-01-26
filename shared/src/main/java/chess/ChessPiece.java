@@ -230,33 +230,70 @@ public class ChessPiece {
         @Override
         public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
             Collection<ChessMove> moves = new ArrayList<>();
-            int[][] whitePawnMoves ={
-                    {1, 0}, {1, 1}, {1, -1}
-            };
+
+            //determine direction and initial row based on piece color
+            int direction = (pieceColor == WHITE) ? 1: -1;
+            int initialRow = (pieceColor == WHITE) ? 2:7;
+
             int row = myPosition.getRow();
             int col = myPosition.getColumn();
-            if (pieceColor == WHITE) {
 
-                ChessPosition frontPosition = new ChessPosition(row+1, col);
-                ChessPosition rightPosition = new ChessPosition(row+1, col+1);
-                ChessPosition leftPosition = new ChessPosition(row+1, col-1);
-                if (board.isPositionValid(frontPosition) && !board.isPositionOccupiedByFriendly(frontPosition, myPosition) && !board.isPositionOccupiedByEnemy(frontPosition, myPosition)) {
-                        moves.add(new ChessMove(myPosition, frontPosition, null));
-                    }
+
+            if (pieceColor == WHITE) {
+                // move forward
+                ChessPosition frontPosition = new ChessPosition(row + 1, col);
+                if (board.isPositionValid(frontPosition)
+                        && !board.isPositionOccupiedByFriendly(frontPosition, myPosition)
+                        && !board.isPositionOccupiedByEnemy(frontPosition, myPosition)) {
+                    moves.add(new ChessMove(myPosition, frontPosition, null));
                 }
-                if (board.isPositionValid(rightPosition) && board.isPositionOccupiedByEnemy(rightPosition, myPosition)) {
+                //right attack
+                ChessPosition rightPosition = new ChessPosition(row+1, col+1);
+                if (board.isPositionValid(rightPosition)
+                        && board.isPositionOccupiedByEnemy(rightPosition, myPosition)) {
                     moves.add(new ChessMove(myPosition, rightPosition, null));
                 }
-                if (board.isPositionValid(leftPosition) && board.isPositionOccupiedByEnemy(leftPosition, myPosition)) {
+                // left attack
+                ChessPosition leftPosition = new ChessPosition(row+1, col-1);
+                if (board.isPositionValid(leftPosition)
+                        && board.isPositionOccupiedByEnemy(leftPosition, myPosition)) {
                     moves.add(new ChessMove(myPosition, leftPosition, null));
                 }
-
+                // two steps forward move
+                ChessPosition twoStepPosition = new ChessPosition(row + 2, col);
+                if (board.isPositionValid(twoStepPosition)
+                        && !board.isPositionOccupiedByEnemy(twoStepPosition, myPosition)
+                        && !board.isPositionOccupiedByFriendly(twoStepPosition, myPosition)) {
+                    moves.add(new ChessMove(myPosition, twoStepPosition, null));
+                }
             }
-            int[][] blackPawnMoves = {
-                    {-1, 0}, {-1, 1}, {-1, -1}
-            };
-            if (pieceColor == BLACK) {
-
+            if (pieceColor == ChessGame.TeamColor.BLACK) {
+                // move forward
+                ChessPosition frontPosition = new ChessPosition(row - 1, col);
+                if (board.isPositionValid(frontPosition)
+                        && !board.isPositionOccupiedByFriendly(frontPosition, myPosition)
+                        && !board.isPositionOccupiedByEnemy(frontPosition, myPosition)) {
+                    moves.add(new ChessMove(myPosition, frontPosition, null));
+                }
+                //right attack
+                ChessPosition rightPosition = new ChessPosition(row - 1, col +1);
+                if (board.isPositionValid(rightPosition)
+                        && board.isPositionOccupiedByEnemy(rightPosition, myPosition)) {
+                    moves.add(new ChessMove(myPosition, rightPosition, null));
+                }
+                // left attack
+                ChessPosition leftPosition = new ChessPosition(row-1, col-1);
+                if (board.isPositionValid(leftPosition)
+                        && board.isPositionOccupiedByEnemy(leftPosition, myPosition)) {
+                    moves.add(new ChessMove(myPosition, leftPosition, null));
+                }
+                // two steps forward move
+                ChessPosition twoStepPosition = new ChessPosition(row -2, col);
+                if (board.isPositionValid(twoStepPosition)
+                        && !board.isPositionOccupiedByEnemy(twoStepPosition, myPosition)
+                        && !board.isPositionOccupiedByFriendly(twoStepPosition, myPosition)) {
+                    moves.add(new ChessMove(myPosition, twoStepPosition, null));
+                }
             }
             return moves;
         }
