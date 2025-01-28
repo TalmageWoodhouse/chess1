@@ -247,7 +247,7 @@ public class ChessPiece {
                 if (board.isPositionValid(frontPosition)
                         && !board.isPositionOccupiedByFriendly(frontPosition, myPosition)
                         && !board.isPositionOccupiedByEnemy(frontPosition, myPosition)) {
-                    if (row == promotionRow) {
+                    if (row + 1 == promotionRow) {
                         moves.add(new ChessMove(myPosition, frontPosition, PieceType.ROOK));
                         moves.add(new ChessMove(myPosition, frontPosition, PieceType.BISHOP));
                         moves.add(new ChessMove(myPosition, frontPosition, PieceType.QUEEN));
@@ -260,7 +260,7 @@ public class ChessPiece {
                 ChessPosition rightPosition = new ChessPosition(row+1, col+1);
                 if (board.isPositionValid(rightPosition)
                         && board.isPositionOccupiedByEnemy(rightPosition, myPosition)) {
-                    if (row == promotionRow) {
+                    if (row + 1 == promotionRow) {
                         moves.add(new ChessMove(myPosition, rightPosition, PieceType.ROOK));
                         moves.add(new ChessMove(myPosition, rightPosition, PieceType.BISHOP));
                         moves.add(new ChessMove(myPosition, rightPosition, PieceType.QUEEN));
@@ -273,7 +273,7 @@ public class ChessPiece {
                 ChessPosition leftPosition = new ChessPosition(row+1, col-1);
                 if (board.isPositionValid(leftPosition)
                         && board.isPositionOccupiedByEnemy(leftPosition, myPosition)) {
-                    if (row == promotionRow) {
+                    if (row + 1 == promotionRow) {
                         moves.add(new ChessMove(myPosition, leftPosition, PieceType.ROOK));
                         moves.add(new ChessMove(myPosition, leftPosition, PieceType.BISHOP));
                         moves.add(new ChessMove(myPosition, leftPosition, PieceType.QUEEN));
@@ -287,6 +287,7 @@ public class ChessPiece {
                 if (board.isPositionValid(twoStepPosition)
                         && !board.isPositionOccupiedByEnemy(twoStepPosition, myPosition)
                         && !board.isPositionOccupiedByFriendly(twoStepPosition, myPosition)
+                        && !board.isPositionOccupiedByFriendly(frontPosition, myPosition)
                         && row == initialRow) {
                     moves.add(new ChessMove(myPosition, twoStepPosition, null));
                 }
@@ -297,7 +298,7 @@ public class ChessPiece {
                 if (board.isPositionValid(frontPosition)
                         && !board.isPositionOccupiedByFriendly(frontPosition, myPosition)
                         && !board.isPositionOccupiedByEnemy(frontPosition, myPosition)) {
-                    if (row == promotionRow) {
+                    if (row - 1 == promotionRow) {
                         moves.add(new ChessMove(myPosition, frontPosition, PieceType.ROOK));
                         moves.add(new ChessMove(myPosition, frontPosition, PieceType.BISHOP));
                         moves.add(new ChessMove(myPosition, frontPosition, PieceType.QUEEN));
@@ -310,7 +311,7 @@ public class ChessPiece {
                 ChessPosition rightPosition = new ChessPosition(row - 1, col +1);
                 if (board.isPositionValid(rightPosition)
                         && board.isPositionOccupiedByEnemy(rightPosition, myPosition)) {
-                    if (row == promotionRow) {
+                    if (row - 1 == promotionRow) {
                         moves.add(new ChessMove(myPosition, rightPosition, PieceType.ROOK));
                         moves.add(new ChessMove(myPosition, rightPosition, PieceType.BISHOP));
                         moves.add(new ChessMove(myPosition, rightPosition, PieceType.QUEEN));
@@ -323,7 +324,7 @@ public class ChessPiece {
                 ChessPosition leftPosition = new ChessPosition(row-1, col-1);
                 if (board.isPositionValid(leftPosition)
                         && board.isPositionOccupiedByEnemy(leftPosition, myPosition)) {
-                    if (row == promotionRow) {
+                    if (row - 1 == promotionRow) {
                         moves.add(new ChessMove(myPosition, leftPosition, PieceType.ROOK));
                         moves.add(new ChessMove(myPosition, leftPosition, PieceType.BISHOP));
                         moves.add(new ChessMove(myPosition, leftPosition, PieceType.QUEEN));
@@ -337,6 +338,7 @@ public class ChessPiece {
                 if (board.isPositionValid(twoStepPosition)
                         && !board.isPositionOccupiedByEnemy(twoStepPosition, myPosition)
                         && !board.isPositionOccupiedByFriendly(twoStepPosition, myPosition)
+                        && !board.isPositionOccupiedByFriendly(frontPosition, myPosition)
                         && row == initialRow) {
                     moves.add(new ChessMove(myPosition, twoStepPosition, null));
                 }
