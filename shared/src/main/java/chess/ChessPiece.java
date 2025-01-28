@@ -15,10 +15,10 @@ import static chess.ChessGame.TeamColor.WHITE;
  */
 public class ChessPiece {
 
-    private static final ChessGame.TeamColor pieceColor;
+    private final ChessGame.TeamColor pieceColor;
     private final PieceType type;
 
-    public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
+    public ChessPiece(ChessGame.TeamColor pieceColor, PieceType type) {
         this.pieceColor = pieceColor;
         this.type = type;
     }
@@ -231,118 +231,117 @@ public class ChessPiece {
         public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
             Collection<ChessMove> moves = new ArrayList<>();
 
+
             //determine direction and initial row based on piece color
-            int direction = (pieceColor == WHITE) ? 1: -1;
-            int initialRow = (pieceColor == WHITE) ? 2:7;
+            int initialRow = (board.getPiece(myPosition).pieceColor == WHITE) ? 2:7;
+            int promotionRow = (board.getPiece(myPosition).pieceColor == WHITE) ? 8:1;
 
             int row = myPosition.getRow();
             int col = myPosition.getColumn();
 
 
-            if (pieceColor == WHITE) {
+
+            if (board.getPiece(myPosition).pieceColor == WHITE) {
                 // move forward
                 ChessPosition frontPosition = new ChessPosition(row + 1, col);
                 if (board.isPositionValid(frontPosition)
                         && !board.isPositionOccupiedByFriendly(frontPosition, myPosition)
                         && !board.isPositionOccupiedByEnemy(frontPosition, myPosition)) {
+                    if (row == promotionRow) {
+                        moves.add(new ChessMove(myPosition, frontPosition, PieceType.ROOK));
+                        moves.add(new ChessMove(myPosition, frontPosition, PieceType.BISHOP));
+                        moves.add(new ChessMove(myPosition, frontPosition, PieceType.QUEEN));
+                        moves.add(new ChessMove(myPosition, frontPosition, PieceType.KNIGHT));
+                    } else {
                     moves.add(new ChessMove(myPosition, frontPosition, null));
+                    }
                 }
                 //right attack
                 ChessPosition rightPosition = new ChessPosition(row+1, col+1);
                 if (board.isPositionValid(rightPosition)
                         && board.isPositionOccupiedByEnemy(rightPosition, myPosition)) {
-                    moves.add(new ChessMove(myPosition, rightPosition, null));
+                    if (row == promotionRow) {
+                        moves.add(new ChessMove(myPosition, rightPosition, PieceType.ROOK));
+                        moves.add(new ChessMove(myPosition, rightPosition, PieceType.BISHOP));
+                        moves.add(new ChessMove(myPosition, rightPosition, PieceType.QUEEN));
+                        moves.add(new ChessMove(myPosition, rightPosition, PieceType.KNIGHT));
+                    } else {
+                        moves.add(new ChessMove(myPosition, rightPosition, null));
+                    }
                 }
                 // left attack
                 ChessPosition leftPosition = new ChessPosition(row+1, col-1);
                 if (board.isPositionValid(leftPosition)
                         && board.isPositionOccupiedByEnemy(leftPosition, myPosition)) {
-                    moves.add(new ChessMove(myPosition, leftPosition, null));
+                    if (row == promotionRow) {
+                        moves.add(new ChessMove(myPosition, leftPosition, PieceType.ROOK));
+                        moves.add(new ChessMove(myPosition, leftPosition, PieceType.BISHOP));
+                        moves.add(new ChessMove(myPosition, leftPosition, PieceType.QUEEN));
+                        moves.add(new ChessMove(myPosition, leftPosition, PieceType.KNIGHT));
+                    } else {
+                        moves.add(new ChessMove(myPosition, leftPosition, null));
+                    }
                 }
                 // two steps forward move
                 ChessPosition twoStepPosition = new ChessPosition(row + 2, col);
                 if (board.isPositionValid(twoStepPosition)
                         && !board.isPositionOccupiedByEnemy(twoStepPosition, myPosition)
-                        && !board.isPositionOccupiedByFriendly(twoStepPosition, myPosition)) {
+                        && !board.isPositionOccupiedByFriendly(twoStepPosition, myPosition)
+                        && row == initialRow) {
                     moves.add(new ChessMove(myPosition, twoStepPosition, null));
                 }
             }
-            if (pieceColor == ChessGame.TeamColor.BLACK) {
+            if (board.getPiece(myPosition).pieceColor == BLACK) {
                 // move forward
                 ChessPosition frontPosition = new ChessPosition(row - 1, col);
                 if (board.isPositionValid(frontPosition)
                         && !board.isPositionOccupiedByFriendly(frontPosition, myPosition)
                         && !board.isPositionOccupiedByEnemy(frontPosition, myPosition)) {
-                    moves.add(new ChessMove(myPosition, frontPosition, null));
+                    if (row == promotionRow) {
+                        moves.add(new ChessMove(myPosition, frontPosition, PieceType.ROOK));
+                        moves.add(new ChessMove(myPosition, frontPosition, PieceType.BISHOP));
+                        moves.add(new ChessMove(myPosition, frontPosition, PieceType.QUEEN));
+                        moves.add(new ChessMove(myPosition, frontPosition, PieceType.KNIGHT));
+                    } else {
+                        moves.add(new ChessMove(myPosition, frontPosition, null));
+                    }
                 }
                 //right attack
                 ChessPosition rightPosition = new ChessPosition(row - 1, col +1);
                 if (board.isPositionValid(rightPosition)
                         && board.isPositionOccupiedByEnemy(rightPosition, myPosition)) {
-                    moves.add(new ChessMove(myPosition, rightPosition, null));
+                    if (row == promotionRow) {
+                        moves.add(new ChessMove(myPosition, rightPosition, PieceType.ROOK));
+                        moves.add(new ChessMove(myPosition, rightPosition, PieceType.BISHOP));
+                        moves.add(new ChessMove(myPosition, rightPosition, PieceType.QUEEN));
+                        moves.add(new ChessMove(myPosition, rightPosition, PieceType.KNIGHT));
+                    } else {
+                        moves.add(new ChessMove(myPosition, rightPosition, null));
+                    }
                 }
                 // left attack
                 ChessPosition leftPosition = new ChessPosition(row-1, col-1);
                 if (board.isPositionValid(leftPosition)
                         && board.isPositionOccupiedByEnemy(leftPosition, myPosition)) {
-                    moves.add(new ChessMove(myPosition, leftPosition, null));
+                    if (row == promotionRow) {
+                        moves.add(new ChessMove(myPosition, leftPosition, PieceType.ROOK));
+                        moves.add(new ChessMove(myPosition, leftPosition, PieceType.BISHOP));
+                        moves.add(new ChessMove(myPosition, leftPosition, PieceType.QUEEN));
+                        moves.add(new ChessMove(myPosition, leftPosition, PieceType.KNIGHT));
+                    } else {
+                        moves.add(new ChessMove(myPosition, leftPosition, null));
+                    }
                 }
                 // two steps forward move
                 ChessPosition twoStepPosition = new ChessPosition(row -2, col);
                 if (board.isPositionValid(twoStepPosition)
                         && !board.isPositionOccupiedByEnemy(twoStepPosition, myPosition)
-                        && !board.isPositionOccupiedByFriendly(twoStepPosition, myPosition)) {
+                        && !board.isPositionOccupiedByFriendly(twoStepPosition, myPosition)
+                        && row == initialRow) {
                     moves.add(new ChessMove(myPosition, twoStepPosition, null));
                 }
             }
             return moves;
         }
     }
-
-
-//    public static class QueenMoveCalculator implements ChessPieceMoveCalculator {
-//
-//        @Override
-//        public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition position) {
-//            Collection<ChessMove> moves = new ArrayList<>();
-//            //Queen combines bishop and rook moves
-//            addSlidingMoves(board, position, moves, new int[][]{
-//                    {1, 0}, {0, 1}, {-1, 0}, {0, -1}, //rook moves
-//                    {1, 1}, {1, -1}, {-1, 1}, {-1, -1} //Bishop moves
-//            });
-//            return moves;
-//        }
-//        private void addSlidingMoves(ChessBoard board, ChessPosition position, Collection<ChessMove> moves, int[][] directions) {
-//            for (int[] direction : directions) {
-//                ChessPosition newPosition = position.offset(direction[0], direction[1]);
-//                while (board.isPositionValid(newPosition)) {
-//                    if (board.isPositionOccupied(newPosition)) {
-//                        if(!board.isPositionOccupiedByFriendly(newPosition, position)) {
-//                            moves.add(new ChessMove(position, newPosition, null));
-//                        }
-//                        break; // stop sliding in this direction
-//                    }
-//                    moves.add(new ChessMove(position, newPosition, null));
-//                    newPosition = newPosition.offset(direction[0], direction[1]);
-//                }
-//            }
-//        }
-//    }
-
-//    public static class KingMoveCalculator implements ChessPieceMoveCalculator {
-//        @Override
-//        public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition position) {
-//            return List.of();
-//        }
-//    }
-
-//    public static class KnightMoveCalculator implements ChessPieceMoveCalculator {
-//
-//        @Override
-//        public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition position) {}
-//    }
-
-
-
-
 }
