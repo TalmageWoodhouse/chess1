@@ -3,6 +3,7 @@ package chess;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import static chess.ChessGame.TeamColor.BLACK;
 import static chess.ChessGame.TeamColor.WHITE;
@@ -21,6 +22,20 @@ public class ChessPiece {
     public ChessPiece(ChessGame.TeamColor pieceColor, PieceType type) {
         this.pieceColor = pieceColor;
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        String toStringType = switch(getPieceType()) {
+            case QUEEN -> "Q";
+            case BISHOP -> "B";
+            case KING -> "K";
+            case ROOK -> "R";
+            case PAWN -> "P";
+            case KNIGHT -> "KN";
+            default -> throw new RuntimeException("invalid type in pieceMoves");
+        };
+        return toStringType;
     }
 
     /**
@@ -345,5 +360,19 @@ public class ChessPiece {
             }
             return moves;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ChessPiece that = (ChessPiece) o;
+        return pieceColor == that.pieceColor && type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pieceColor, type);
     }
 }
