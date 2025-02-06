@@ -87,14 +87,6 @@ public class ChessBoard {
 //        squares[7][6] = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KNIGHT);
 //        squares[7][7] = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.ROOK);
     }
-
-    @Override
-    public String toString() {
-        return "ChessBoard{" +
-                "squares=" + Arrays.deepToString(squares) +
-                '}';
-    }
-
     /**
      * Checks if the given position is within the boundaries of the chessboard.
      *
@@ -121,7 +113,7 @@ public class ChessBoard {
      */
     public boolean isPositionOccupiedByFriendly(ChessPosition position, ChessPosition myPosition) {
         if (position == null || myPosition == null) {
-            return false; //invalid input
+            throw new IllegalArgumentException("Positions cannot be null"); //invalid input
         }
         ChessPiece myPiece = getPiece(myPosition);
         ChessPiece targetPiece = getPiece(position);
@@ -140,7 +132,7 @@ public class ChessBoard {
      */
     public boolean isPositionOccupiedByEnemy(ChessPosition position, ChessPosition myPosition) {
         if (position == null || myPosition == null) {
-            return false; //invalid input
+            throw new IllegalArgumentException("Positions cannot be null"); //invalid input
         }
         ChessPiece myPiece = getPiece(myPosition);
         ChessPiece targetPiece = getPiece(position);
@@ -149,6 +141,14 @@ public class ChessBoard {
             return false;
         }
         return myPiece.getTeamColor() != targetPiece.getTeamColor();
+    }
+
+
+    @Override
+    public String toString() {
+        return "ChessBoard{" +
+                "squares=" + Arrays.deepToString(squares) +
+                '}';
     }
 
     @Override

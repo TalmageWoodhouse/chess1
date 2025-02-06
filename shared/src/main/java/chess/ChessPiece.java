@@ -23,21 +23,6 @@ public class ChessPiece {
         this.pieceColor = pieceColor;
         this.type = type;
     }
-
-    @Override
-    public String toString() {
-        String toStringType = switch(getPieceType()) {
-            case QUEEN -> "Q";
-            case BISHOP -> "B";
-            case KING -> "K";
-            case ROOK -> "R";
-            case PAWN -> "P";
-            case KNIGHT -> "KN";
-            default -> throw new RuntimeException("invalid type in pieceMoves");
-        };
-        return toStringType;
-    }
-
     /**
      * The various different chess piece options
      */
@@ -49,21 +34,18 @@ public class ChessPiece {
         ROOK,
         PAWN
     }
-
     /**
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
         return pieceColor;
     }
-
     /**
      * @return which type of chess piece this piece is
      */
     public PieceType getPieceType() {
         return type;
     }
-
     /**
      * Calculates all the positions a chess piece can move to
      * Does not take into account moves that are illegal due to leaving the king in
@@ -81,20 +63,18 @@ public class ChessPiece {
             case KNIGHT -> new KnightMoveCalculator();
             default -> throw new RuntimeException("invalid type in pieceMoves");
         };
-
         return moves.pieceMoves(board, myPosition);
     }
-
 
     public interface ChessPieceMoveCalculator {
         /**
          * calculates all possible moves for a chess piece
          *
          * @param board The current chessboard
-         * @param position The position of the piece
+         * @param myPosition The position of the piece
          * @return A collection of valid moves for the piece
          */
-        Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition position);
+        Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition);
     }
 
     public static class RookMoveCalculator implements ChessPieceMoveCalculator {
@@ -245,16 +225,12 @@ public class ChessPiece {
         @Override
         public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
             Collection<ChessMove> moves = new ArrayList<>();
-
-
             //determine direction and initial row based on piece color
             int initialRow = (board.getPiece(myPosition).pieceColor == WHITE) ? 2:7;
             int promotionRow = (board.getPiece(myPosition).pieceColor == WHITE) ? 8:1;
 
             int row = myPosition.getRow();
             int col = myPosition.getColumn();
-
-
 
             if (board.getPiece(myPosition).pieceColor == WHITE) {
                 // move forward
@@ -360,6 +336,20 @@ public class ChessPiece {
             }
             return moves;
         }
+    }
+
+    @Override
+    public String toString() {
+        String toStringType = switch(getPieceType()) {
+            case QUEEN -> "Q";
+            case BISHOP -> "B";
+            case KING -> "K";
+            case ROOK -> "R";
+            case PAWN -> "P";
+            case KNIGHT -> "KN";
+            default -> throw new RuntimeException("invalid type in pieceMoves");
+        };
+        return toStringType;
     }
 
     @Override
