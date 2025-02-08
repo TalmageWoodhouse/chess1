@@ -115,7 +115,7 @@ public class ChessGame {
         // change turns
         turn = (turn == TeamColor.WHITE) ? TeamColor.BLACK : TeamColor.WHITE;
     }
-
+    //
     private ChessPosition findKing(TeamColor teamColor) {
         for (int row = 1; row < 9; row++) {
             for (int col= 1; col < 9; col++) {
