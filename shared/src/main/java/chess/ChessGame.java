@@ -61,7 +61,7 @@ public class ChessGame {
         for (ChessMove move : moves) {
                 //make move in the copy
                 boardCopy.addPiece(move.getStartPosition(), null);
-                boardCopy.addPiece(move.getEndPosition(), piece);
+                boardCopy.addPiece(move.getEndPosition(), board.getPiece(move.getStartPosition()));
                 //check copy if != isincheck
                 if (!isInCheck(piece.getTeamColor())) {
                     validMoves.add(move);
@@ -77,12 +77,18 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        throw new RuntimeException("Not implemented");
-
-
         // if valid move
 
-        // ensure that its the turn of piece being moved
+        //if move gets promotion piece
+        if (move.getPromotionPiece() != null){
+            board.addPiece(move.getEndPosition(), new ChessPiece(getTeamTurn(), move.getPromotionPiece()));
+        }
+        else{
+            board.addPiece(move.getEndPosition(), board.getPiece(move.getStartPosition()));
+        }
+        board.addPiece(move.getStartPosition(), null);
+
+        //ensure that its the turn of piece being moved
         //do move
         // change turns
     }
@@ -121,8 +127,8 @@ public class ChessGame {
                     continue;
                 }
                 // if this opponent piece can move to the kings position return true
-                Collection<ChessMove> teamMoves = piece.pieceMoves(board, pos);
-                for (ChessMove move : teamMoves){
+                Collection<ChessMove> enemyMoves = piece.pieceMoves(board, pos);
+                for (ChessMove move : enemyMoves){
                     if (move.getEndPosition().equals(kingPosition)) {
                         return true;
                     }
