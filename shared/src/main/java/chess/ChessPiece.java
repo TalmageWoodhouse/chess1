@@ -143,8 +143,8 @@ public class ChessPiece {
         public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
             Collection<ChessMove> moves = new ArrayList<>();
             int[][] queenMoveDirections = {
-                    {1, 1}, {1, -1}, {-1, 1}, {-1, -1}, //bishop like moves
-                    {1, 0}, {-1, 0}, {0, 1}, {0, -1}  //rook like moves
+                    {1, 1}, {1, -1}, {1, 0}, {-1, -1}, //bishop like moves
+                    {-1, 1}, {-1, 0}, {0, 1}, {0, -1}  //rook like moves
             };
             int row = myPosition.getRow();
             int col = myPosition.getColumn();
